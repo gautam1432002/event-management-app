@@ -1,0 +1,158 @@
+📦 Tech Stack
+
+Backend: Java 8 (JDK 8), Servlets, JSP, JDBC
+
+Frontend: JSP pages with HTML5, CSS3 (dark theme with gradients, glow, animations), Vanilla JavaScript
+
+Database: MySQL 8 (JDBC for database connectivity)
+
+Build Tool: (use free sources according to you)
+
+Server: Apache Tomcat 8.0.30 (WAR deployment)
+
+IDE Compatibility: NetBeans 8 and Replit
+
+Hosting: (use free sources according to you)
+
+🎯 Project Overview
+
+EventTech is a full-stack Java platform for managing registrations, certificates, and admin workflows for TARUNYAM - Tech Event 2025.
+It started as a frontend-only HTML/CSS/JS registration site and evolved into a fully functional full-stack app.
+
+🚀 Core Features
+
+User Registration:
+
+Modal registration form for events: Code Rush, Tech Quiz, Hackathon, Web Master, Debug Dash, AI Challenge.
+
+Fields: Full Name, Email, College Name, Event.
+
+Data stored via RegisterServlet and RegistrationDAO.
+
+On success, auto-generate participation certificates (with custom design) and enable JPG download via html2canvas.
+
+Certificate Generation:
+
+Certificates with animated gradients, shimmer effects, and event details.
+
+Winner certificate generation when admin selects winners.
+
+Admin Login & Dashboard:
+
+Admin login via AdminLoginServlet & AdminDAO.
+
+Dashboard to view all participants in themed cards with pagination.
+
+Options: Edit/Delete participant, Select/Revoke winner, Export data as CSV/HTML.
+
+Event Settings:
+
+Add, edit, and delete events dynamically via EventSettingsServlet.
+
+Dropdowns update in real-time.
+
+Navigation & UI:
+
+Dark-themed UI, blue/purple gradients, glow buttons, animations, and responsive design.
+
+Back navigation via history.back().
+
+🎨 UI/UX Requirements
+
+Maintain modern tech theme (dark gradients, glowing text, animated buttons).
+
+Mobile & desktop responsive.
+
+All alerts, confirmations, and errors should use custom animated toast notifications instead of raw servlet text.
+
+🛡️ JSON-Based Servlet Responses
+
+All servlets should return JSON instead of raw text:
+
+{ "status": "success", "message": "Registration Successful" }
+
+
+Frontend should parse JSON and display results via toast notifications:
+
+✅ success → green border toast
+
+❌ error → red border toast
+
+🗂️ Project Structure
+EventTech/
+├── src/main/java/com/event/dao/ 
+│   ├── DBConnection.java
+│   ├── RegistrationDAO.java
+│   ├── EventDAO.java
+│   ├── AdminDAO.java
+│   └── CertificateDAO.java
+├── src/main/java/com/event/servlets/
+│   ├── RegisterServlet.java
+│   ├── AdminLoginServlet.java
+│   ├── AdminDashboardServlet.java
+│   ├── EventSettingsServlet.java
+│   └── OtherServlets...
+├── src/main/webapp/WEB-INF/web.xml
+├── src/main/webapp/jsp/ (index.jsp, admin-login.jsp, dashboard.jsp, event-settings.jsp...)
+├── src/main/webapp/css/ (Dark theme, glow, responsive styles)
+├── src/main/webapp/js/ (Modal handling, toast notifications, AJAX calls)
+├── sql/schema.sql (MySQL tables + seed data)
+└── README.md (Setup guide)
+
+🗄️ Database Schema
+
+users(id, username, password, role)
+
+registrations(id, name, email, college, event, winner_status)
+
+events(id, event_name, description)
+
+audit_log(id, action, timestamp) (optional)
+
+🔧 Functional Notes
+
+Plain text passwords for now, but comment where hashing should be added.
+
+Modular DAO classes for clean database access.
+
+Use fetch() in JavaScript for all form submissions, parsing servlet JSON responses.
+
+Use custom animated toast notifications (CSS+JS) for alerts/errors/success.
+
+Integrate certificate download using html2canvas.
+
+WAR deployable via Maven.
+
+Include setup steps for Replit and AWS deployment.
+
+Comment each class and servlet for clarity.
+
+🎯 Deliverable
+
+Generate a fully working Replit project that:
+
+Builds successfully with Maven.
+
+Has a working Tomcat WAR file.
+
+Includes frontend + backend + SQL schema.
+
+Implements toast notifications for all messages.
+
+Preserves the modern animated dark theme and responsiveness of Tech3.html.
+
+All code is production-ready, modular, and documented."*
+
+This prompt gives Replit AI everything it needs:
+
+Tech stack and deployment target
+
+Exact project architecture
+
+Database schema
+
+Modern UI theme details
+
+Toast notifications instead of raw servlet text
+
+Full backend/DAO/Servlet requirements

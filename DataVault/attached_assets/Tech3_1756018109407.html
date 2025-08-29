@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TARUNYAM - Tech Event</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"%3E%3Cpath fill="rgba(255,255,255,0.05)" fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"%3E%3C/path%3E%3C/svg%3E');
+            background-size: cover;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            position: relative;
+            padding: 2rem;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .title {
+            font-size: 3.5rem;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            animation: glow 4s infinite alternate;
+        }
+
+        @keyframes glow {
+            0% { text-shadow: 0 0 10px rgba(255,255,255,0.8); }
+            100% { text-shadow: 0 0 20px rgba(255,255,255,1); }
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #3b82f6, #8b5cf6, #ec4899);
+            animation: gradientBG 12s ease infinite;
+            background-size: 200% 200%;
+            opacity: 0.3;
+            z-index: 0;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: shine 6s infinite;
+            transform: rotate(30deg);
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(30deg); }
+            20% { transform: translateX(100%) rotate(30deg); }
+            100% { transform: translateX(100%) rotate(30deg); }
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+            width: 100%;
+            padding: 0;
+        }
+
+        .game-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+            transform: rotate(30deg);
+            transition: all 0.5s ease;
+        }
+
+        .game-card:hover::before {
+            transform: rotate(0deg) translateX(25%) translateY(25%);
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .game-card h3 {
+            color: white;
+            margin: 0 0 10px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .game-card p {
+            color: rgba(255,255,255,0.9);
+            margin: 0 0 15px 0;
+            position: relative;
+            z-index: 1;
+            flex-grow: 1;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            color: white;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .modal-content h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            color: white;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            box-sizing: border-box;
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .reveal-btn {
+            background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            width: 100%;
+            max-width: 200px;
+            margin: 10px auto;
+            display: block;
+        }
+
+        .reveal-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: reveal 2s infinite;
+        }
+
+        @keyframes reveal {
+            0% { left: -100%; }
+            50% { left: 100%; }
+            100% { left: 100%; }
+        }
+
+        .reveal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        #adminControls h3 {
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        #participantsList div {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .select-winner-btn {
+            background: linear-gradient(45deg, #eab308, #f97316);
+            padding: 8px 15px;
+            font-size: 0.9rem;
+            max-width: 120px;
+        }
+
+        .certificate {
+            width: 800px;
+            height: 600px;
+            margin: 30px auto;
+            position: relative;
+            background: linear-gradient(135deg, #f0f7ff, #ffffff),
+                        url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"%3E%3Cg opacity="0.15"%3E%3Crect x="0" y="0" width="800" height="600" fill="none" stroke="#3b82f6" stroke-width="20"/%3E%3Ccircle cx="400" cy="300" r="150" fill="none" stroke="#3b82f6" stroke-width="10" stroke-dasharray="20,20"/%3E%3Cpath d="M100,500 Q400,400 700,500" stroke="#3b82f6" stroke-width="15" fill="none" opacity="0.5"/%3E%3C/g%3E%3C/svg%3E');
+            background-size: 100% 100%, cover;
+            background-blend-mode: overlay;
+            border: 8px solid #1e3a8a;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2), inset 0 0 15px rgba(59,130,246,0.1);
+            font-family: 'Poppins', sans-serif;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .certificate::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(59,130,246,0.1), transparent);
+            animation: shimmer 3s infinite;
+            z-index: 0;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .winner-cert {
+            background: linear-gradient(45deg, #fefcbf, #fff9db),
+                        url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"%3E%3Cg opacity="0.25"%3E%3Crect x="0" y="0" width="800" height="600" fill="none" stroke="#eab308" stroke-width="25"/%3E%3Ccircle cx="400" cy="300" r="180" fill="none" stroke="#eab308" stroke-width="15" stroke-dasharray="30,30"/%3E%3Cpath d="M100,500 Q400,350 700,500" stroke="#eab308" stroke-width="20" fill="none" opacity="0.7"/%3E%3Cpolygon points="50,50 100,50 125,100 75,100" fill="#eab308"/%3E%3Cpolygon points="750,550 700,550 675,500 725,500" fill="#eab308"/%3E%3C/g%3E%3C/svg%3E');
+            background-size: 100% 100%, cover;
+            background-blend-mode: overlay;
+            border: 8px double gold;
+            box-shadow: 0 20px 50px rgba(234,179,8,0.4), inset 0 0 20px rgba(255,215,0,0.3);
+        }
+
+        .winner-cert::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(234,179,8,0.2), transparent);
+            animation: shimmer 3s infinite;
+            z-index: 0;
+        }
+
+        .certificate > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cert-title {
+            color: #1e3a8a;
+            font-size: 2.5rem;
+            margin: 20px 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .winner-cert .cert-title {
+            color: #b45309;
+            font-size: 2.8rem;
+            text-shadow: 0 3px 8px rgba(234,179,8,0.5);
+        }
+
+        .certificate h2 {
+            color: #3b82f6;
+            font-size: 1.8rem;
+            margin: 15px 0;
+        }
+
+        .winner-cert h2 {
+            color: #eab308;
+        }
+
+        .certificate h3 {
+            color: #1e3a8a;
+            font-size: 2rem;
+            margin: 15px 0;
+        }
+
+        .winner-cert h3 {
+            color: #b45309;
+        }
+
+        .certificate p {
+            color: #333;
+            font-size: 1.2rem;
+            margin: 10px 0;
+        }
+
+        .download-section {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .title {
+                font-size: 2rem;
+                letter-spacing: 2px;
+            }
+
+            .game-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 15px;
+                margin: 20px 0;
+            }
+
+            .game-card {
+                padding: 20px;
+            }
+
+            .modal-content {
+                padding: 20px;
+                width: 95%;
+            }
+
+            input {
+                padding: 10px;
+                margin: 8px 0;
+            }
+
+            .reveal-btn {
+                padding: 10px 20px;
+                max-width: 100%;
+            }
+
+            .certificate {
+                width: 800px;
+                height: 600px;
+                transform: scale(0.5); /* Scale down to fit mobile screen */
+                transform-origin: center;
+                margin: 20px auto;
+            }
+
+            /* Optional: Force landscape orientation hint */
+            @media (orientation: portrait) {
+                .certificate {
+                    transform: rotate(90deg) scale(0.5);
+                }
+            }
+        }
+
+        @media (min-width: 769px) {
+            .game-grid {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            }
+
+            .certificate {
+                width: 800px;
+                height: 600px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 class="title">TARUNYAM - Tech Event 2025</h1>
+    </header>
+
+    <div class="container">
+        <div id="regModal" class="modal">
+            <div class="modal-content">
+                <button class="close-btn" onclick="closeRegModal()">×</button>
+                <h2>Registration Form</h2>
+                <form id="registrationForm">
+                    <input type="text" id="name" placeholder="Full Name" required>
+                    <input type="email" id="email" placeholder="Email" required>
+                    <input type="text" id="college" placeholder="College Name" required>
+                    <input type="text" id="game" readonly>
+                    <button class="reveal-btn" type="submit">Register</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="game-grid">
+            <div class="game-card">
+                <h3>Code Rush</h3>
+                <p>Competitive Programming</p>
+                <button class="reveal-btn" onclick="showRegistration('Code Rush')">Register</button>
+            </div>
+            <div class="game-card">
+                <h3>Tech Quiz</h3>
+                <p>Technical Knowledge Test</p>
+                <button class="reveal-btn" onclick="showRegistration('Tech Quiz')">Register</button>
+            </div>
+            <div class="game-card">
+                <h3>Hackathon</h3>
+                <p>24-hour Coding Challenge</p>
+                <button class="reveal-btn" onclick="showRegistration('Hackathon')">Register</button>
+            </div>
+            <div class="game-card">
+                <h3>Web Master</h3>
+                <p>Website Building Contest</p>
+                <button class="reveal-btn" onclick="showRegistration('Web Master')">Register</button>
+            </div>
+            <div class="game-card">
+                <h3>Debug Dash</h3>
+                <p>Code Debugging Race</p>
+                <button class="reveal-btn" onclick="showRegistration('Debug Dash')">Register</button>
+            </div>
+            <div class="game-card">
+                <h3>AI Challenge</h3>
+                <p>AI Solution Design</p>
+                <button class="reveal-btn" onclick="showRegistration('AI Challenge')">Register</button>
+            </div>
+        </div>
+
+        <div id="certificateContainer"></div>
+        <div class="download-section" id="downloadSection" style="display: none;">
+            <button class="reveal-btn" onclick="downloadCertificate()">Download Certificate</button>
+        </div>
+
+        <button class="reveal-btn" onclick="openAdminModal()">Admin Login</button>
+        <div id="adminModal" class="modal">
+            <div class="modal-content">
+                <button class="close-btn" onclick="closeAdminModal()">×</button>
+                <h2>Admin Panel</h2>
+                <input type="password" id="adminPass" placeholder="Admin Password">
+                <button class="reveal-btn" onclick="loginAdmin()">Login</button>
+                <div id="adminControls" style="display: none;">
+                    <h3>Registered Participants</h3>
+                    <div id="participantsList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        let participants = [];
+        const adminPassword = "tarunyam2025";
+
+        function showRegistration(game) {
+            document.getElementById('regModal').style.display = 'flex';
+            document.getElementById('game').value = game;
+        }
+
+        function closeRegModal() {
+            document.getElementById('regModal').style.display = 'none';
+        }
+
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const participant = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                college: document.getElementById('college').value,
+                game: document.getElementById('game').value,
+                id: Date.now()
+            };
+            participants.push(participant);
+            generateCertificate(participant, false);
+            this.reset();
+            closeRegModal();
+            updateParticipantsList();
+        });
+
+        function openAdminModal() {
+            document.getElementById('adminModal').style.display = 'flex';
+        }
+
+        function closeAdminModal() {
+            document.getElementById('adminModal').style.display = 'none';
+        }
+
+        function loginAdmin() {
+            const pass = document.getElementById('adminPass').value;
+            if (pass === adminPassword) {
+                document.getElementById('adminControls').style.display = 'block';
+                updateParticipantsList();
+            } else {
+                alert('Incorrect password');
+            }
+        }
+
+        function updateParticipantsList() {
+            const list = document.getElementById('participantsList');
+            list.innerHTML = participants.map(p => `
+                <div>
+                    <span>${p.name} - ${p.game} - ${p.email}</span>
+                    <button class="reveal-btn select-winner-btn" onclick="selectWinner(${p.id})">Select as Winner</button>
+                </div>
+            `).join('');
+        }
+
+        function selectWinner(participantId) {
+            const winner = participants.find(p => p.id === participantId);
+            if (winner) {
+                generateCertificate(winner, true);
+                closeAdminModal();
+            } else {
+                alert('Participant not found!');
+            }
+        }
+
+        function generateCertificate(participant, isWinner) {
+            const certContainer = document.getElementById('certificateContainer');
+            const certClass = isWinner ? 'certificate winner-cert' : 'certificate';
+            
+            certContainer.innerHTML = `
+                <div class="${certClass}" id="certificate">
+                    <h1 class="cert-title">${isWinner ? 'Winner Certificate' : 'Participation Certificate'}</h1>
+                    <h2>TARUNYAM 2025</h2>
+                    <p>This is to certify that</p>
+                    <h3>${participant.name}</h3>
+                    <p>from ${participant.college}</p>
+                    <p>has ${isWinner ? 'won' : 'participated in'} ${participant.game}</p>
+                    <p>Date: ${new Date().toLocaleDateString()}</p>
+                </div>
+            `;
+            document.getElementById('downloadSection').style.display = 'block';
+        }
+
+        function downloadCertificate() {
+            html2canvas(document.getElementById('certificate'), {
+                backgroundColor: null,
+                scale: 2,
+                width: 800,
+                height: 600
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'certificate.jpg';
+                link.href = canvas.toDataURL('image/jpeg', 0.95);
+                link.click();
+            });
+        }
+    </script>
+</body>
+</html>

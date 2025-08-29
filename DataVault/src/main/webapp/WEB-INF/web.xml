@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+         http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0">
+
+    <display-name>EventTech - TARUNYAM Tech Event 2025</display-name>
+    <description>Full-stack Java platform for managing tech event registrations and certificates</description>
+
+    <!-- Welcome file list -->
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+
+    <!-- Session configuration -->
+    <session-config>
+        <session-timeout>60</session-timeout> <!-- 60 minutes -->
+        <cookie-config>
+            <http-only>true</http-only>
+            <secure>false</secure> <!-- Set to true in production with HTTPS -->
+        </cookie-config>
+    </session-config>
+
+    <!-- Security constraints for admin pages -->
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Admin Pages</web-resource-name>
+            <url-pattern>/dashboard.jsp</url-pattern>
+            <url-pattern>/event-settings.jsp</url-pattern>
+        </web-resource-collection>
+        <!-- Note: Custom authentication handled in JSP pages -->
+    </security-constraint>
+
+    <!-- Error pages -->
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error/404.jsp</location>
+    </error-page>
+    
+    <error-page>
+        <error-code>500</error-code>
+        <location>/error/500.jsp</location>
+    </error-page>
+
+    <!-- MIME type mappings -->
+    <mime-mapping>
+        <extension>js</extension>
+        <mime-type>application/javascript</mime-type>
+    </mime-mapping>
+    
+    <mime-mapping>
+        <extension>css</extension>
+        <mime-type>text/css</mime-type>
+    </mime-mapping>
+    
+    <mime-mapping>
+        <extension>json</extension>
+        <mime-type>application/json</mime-type>
+    </mime-mapping>
+
+    <!-- Context parameters -->
+    <context-param>
+        <param-name>app.name</param-name>
+        <param-value>EventTech</param-value>
+    </context-param>
+    
+    <context-param>
+        <param-name>app.version</param-name>
+        <param-value>1.0.0</param-value>
+    </context-param>
+
+    <!-- Filter for character encoding -->
+    <filter>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <filter-class>org.apache.catalina.filters.SetCharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>ignore</param-name>
+            <param-value>false</param-value>
+        </init-param>
+    </filter>
+    
+    <filter-mapping>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- CORS filter for API endpoints -->
+    <filter>
+        <filter-name>CorsFilter</filter-name>
+        <filter-class>org.apache.catalina.filters.CorsFilter</filter-class>
+        <init-param>
+            <param-name>cors.allowed.origins</param-name>
+            <param-value>*</param-value>
+        </init-param>
+        <init-param>
+            <param-name>cors.allowed.methods</param-name>
+            <param-value>GET,POST,HEAD,OPTIONS,PUT,DELETE</param-value>
+        </init-param>
+        <init-param>
+            <param-name>cors.allowed.headers</param-name>
+            <param-value>Content-Type,X-Requested-With,accept,Origin,Access-Control-Request-Method,Access-Control-Request-Headers</param-value>
+        </init-param>
+    </filter>
+    
+    <filter-mapping>
+        <filter-name>CorsFilter</filter-name>
+        <url-pattern>/register</url-pattern>
+        <url-pattern>/admin-login</url-pattern>
+        <url-pattern>/admin-dashboard</url-pattern>
+        <url-pattern>/event-settings</url-pattern>
+        <url-pattern>/winner</url-pattern>
+        <url-pattern>/export</url-pattern>
+    </filter-mapping>
+
+</web-app>

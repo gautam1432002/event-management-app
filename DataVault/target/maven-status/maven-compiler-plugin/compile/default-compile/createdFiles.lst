@@ -1,0 +1,11 @@
+com\event\servlets\WinnerServlet.class
+com\event\servlets\AdminDashboardServlet.class
+com\event\servlets\EventSettingsServlet.class
+com\event\servlets\RegisterServlet.class
+com\event\dao\RegistrationDAO.class
+com\event\servlets\AdminLoginServlet.class
+com\event\dao\AdminDAO.class
+com\event\dao\EventDAO.class
+com\event\dao\DBConnection.class
+com\event\dao\CertificateDAO.class
+com\event\servlets\ExportServlet.class
